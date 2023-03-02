@@ -5,6 +5,7 @@ using OpenTelemetry;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
 using api;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +30,10 @@ using var traceProvider = Sdk.CreateTracerProviderBuilder()
  .AddAspNetCoreInstrumentation()
  .Build();
 
-using var meterProvider = Sdk.CreateMeterProviderBuilder()
-    .AddMeter(Metrics.m.Name)
+/*using var meterProvider = Sdk.CreateMeterProviderBuilder()
+    .AddMeter(Metric1.m.Name)
+    .AddMeter(Histogram1.met.Name)
+    .AddMeter(UpDownCounter.m.Name)
     //.AddRuntimeInstrumentation()
     //.AddProcessInstrumentation()
     .AddPrometheusExporter(o =>
@@ -38,7 +41,9 @@ using var meterProvider = Sdk.CreateMeterProviderBuilder()
         o.StartHttpListener = true;
         o.HttpListenerPrefixes = new string[] { $"http://localhost:9184" };
     })
-    .Build();
+    .Build();*/
+
+
 
 var app = builder.Build();
 
