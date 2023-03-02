@@ -30,6 +30,25 @@ using var traceProvider = Sdk.CreateTracerProviderBuilder()
  .AddAspNetCoreInstrumentation()
  .Build();
 
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(builder =>
+    {
+        builder.AddMeter(Metric1.m.Name);
+        builder.AddMeter(Histogram1.met.Name);
+        builder.AddMeter(UpDownCounter.m.Name);
+        //builder.SetResourceBuilder(appResourceBuilder);
+        builder.AddAspNetCoreInstrumentation();
+        builder.AddHttpClientInstrumentation();
+        builder.AddRuntimeInstrumentation();
+        builder.AddProcessInstrumentation();
+        builder.AddPrometheusExporter(o =>
+        {
+            o.StartHttpListener = true;
+            o.HttpListenerPrefixes = new string[] { $"http://localhost:9184" };
+        })
+    .Build();
+    });
+
 /*using var meterProvider = Sdk.CreateMeterProviderBuilder()
     .AddMeter(Metric1.m.Name)
     .AddMeter(Histogram1.met.Name)
